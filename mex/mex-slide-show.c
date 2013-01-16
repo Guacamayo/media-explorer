@@ -684,11 +684,17 @@ captured_event_cb (ClutterActor *actor,
       return TRUE;
 
     case CLUTTER_KEY_Left:
+    case CLUTTER_KEY_p:
+    case CLUTTER_KEY_Back:
+    case CLUTTER_KEY_Prior:
       mex_slide_show_set_playing (MEX_SLIDE_SHOW (actor), FALSE);
       mex_slide_show_move (MEX_SLIDE_SHOW (actor), -1);
       return TRUE;
 
     case CLUTTER_KEY_Right:
+    case CLUTTER_KEY_n:
+    case CLUTTER_KEY_Forward:
+    case CLUTTER_KEY_Next:
       mex_slide_show_set_playing (MEX_SLIDE_SHOW (actor), FALSE);
       mex_slide_show_move (MEX_SLIDE_SHOW (actor), 1);
       return TRUE;
