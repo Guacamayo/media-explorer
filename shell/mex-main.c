@@ -2234,13 +2234,6 @@ mex_init_default_actions (MexData *data)
   listen_from_begin.mime_types = (gchar **)listen_action_mimetypes;
   listen_from_begin.priority = G_MAXINT - 1;
 
-  /* View action (for pictures) */
-  show.action = mx_action_new_full ("show", _("View"),
-                                    G_CALLBACK (mex_show_cb), data);
-  mx_action_set_icon (show.action, "media-watch-mex");
-  show.mime_types = (gchar **)show_action_mimetypes;
-  show.priority = G_MAXINT;
-
   /* Go back action */
   back.action =
     mx_action_new_full ("go-back", _("Go back"),
