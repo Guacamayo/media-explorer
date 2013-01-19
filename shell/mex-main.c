@@ -1058,6 +1058,20 @@ mex_captured_event_cb (ClutterActor *actor,
 
   key_event = (ClutterKeyEvent *)event;
 
+  if (key_event->keyval == CLUTTER_KEY_PowerDown ||
+      key_event->keyval == CLUTTER_KEY_PowerOff)
+    {
+      static gboolean in_progress = FALSE;
+
+      if (!in_progress)
+        {
+          in_progress = TRUE;
+          g_spawn_command_line_async ("/sbin/shutdown.sysvinit -h now", NULL);
+        }
+
+      return TRUE;
+    }
+
   if (MEX_KEY_HOME (key_event->keyval))
     {
       /*
