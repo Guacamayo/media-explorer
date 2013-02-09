@@ -40,7 +40,7 @@
 
 #include "mex-version.h"
 
-#ifdef HAVE_CLUTTER_X11
+#ifdef CLUTTER_WINDOWING_X11
 #include <clutter/x11/clutter-x11.h>
 #endif
 
@@ -2477,13 +2477,29 @@ mex_startup (MxApplication *app,
   /* Resize and display window */
   mx_window_set_has_toolbar (data->window, FALSE);
 
-#ifdef HAVE_CLUTTER_X11
+#ifdef CLUTTER_WINDOWING_X11
   {
-    Screen *screen = ScreenOfDisplay (clutter_x11_get_default_display (),
-                                      clutter_x11_get_default_screen ());
+    ClutterBackend *backend = clutter_get_default_backend ();
+    const char     *backend_type;
 
-    mx_window_set_window_size (data->window,
-                               WidthOfScreen (screen), HeightOfScreen (screen));
+    backend_type = G_OBJECT_TYPE_NAME (backend);
+
+    /*
+     * This kind of sucks, but the normal GObject type macros for the clutter
+     * backends are part of the private API.
+     */
+    if (!g_strcmp0 (backend_type, "ClutterBackendX11"))
+      {
+
+        Screen *screen = ScreenOfDisplay (clutter_x11_get_default_display (),
+                                          clutter_x11_get_default_screen ());
+
+        mx_window_set_window_size (data->window,
+                                   WidthOfScreen (screen),
+                                   HeightOfScreen (screen));
+      }
+    else
+      mx_window_set_window_size (data->window, 1280, 720);
   }
 #else
   mx_window_set_window_size (data->window, 1280, 720);
