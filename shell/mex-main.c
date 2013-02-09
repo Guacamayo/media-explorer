@@ -2476,7 +2476,18 @@ mex_startup (MxApplication *app,
 
   /* Resize and display window */
   mx_window_set_has_toolbar (data->window, FALSE);
+
+#ifdef HAVE_CLUTTER_X11
+  {
+    Screen *screen = ScreenOfDisplay (clutter_x11_get_default_display (),
+                                      clutter_x11_get_default_screen ());
+
+    mx_window_set_window_size (data->window,
+                               WidthOfScreen (screen), HeightOfScreen (screen));
+  }
+#else
   mx_window_set_window_size (data->window, 1280, 720);
+#endif
   mx_window_show (data->window);
 
   if (opt_fullscreen)
